@@ -1,3 +1,10 @@
+Version 2.4.0 (2015-03-xx)
+--------------------------
+Added ability to modify links allowing cross-domain tracking (#109)
+Added timing event (#320)
+Increased safety of document size detection (#334)
+Started randomly generating ngrok subdomain in integration tests (#333)
+
 Version 2.3.0 (2015-03-03)
 -------------------------
 Added support for sending events via POST (#168)
