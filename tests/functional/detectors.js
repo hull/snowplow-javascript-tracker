@@ -52,10 +52,10 @@ define([
 			3875211103, // IE11
 			1627396823, // Firefox 27.0 Mac
 			972065378,  // Firefox 27.0 XP
-			3434304937, // Firefox 27.0 Linux
+			3488073361, // Firefox 27.0 Linux
 			3832438128, // Chrome 32.0 Mac OS X
 			2660492875, // Chrome 32.0 Windows NT
-			3477630609, // Chrome 32.0 Linux
+			3990591005, // Chrome 32.0 Linux
 			2504300905, // Safari 7.0 Mac
 			1891541158  // Safari 6.0.5 Mac
 		];
