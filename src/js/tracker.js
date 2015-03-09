@@ -271,6 +271,16 @@
 		}
 
 		/**
+		 * Recalculate the domain, URL, and referrer
+		 */
+		function refreshUrl() {
+			locationArray = proxies.fixupUrl(documentAlias.domain, windowAlias.location.href, helpers.getReferrer());
+			domainAlias = helpers.fixupDomain(locationArray[0]);
+			locationHrefAlias = locationArray[1];
+			configReferrerUrl = locationArray[2];
+		}
+
+		/**
 		 * Decorate the querystring of a single link
 		 *
 		 * @param event e The event targeting the link
@@ -400,6 +410,7 @@
 		 * Update domain hash
 		 */
 		function updateDomainHash() {
+			refreshUrl();
 			domainHash = hash((configCookieDomain || domainAlias) + (configCookiePath || '/')).slice(0, 4); // 4 hexits = 16 bits
 		}
 
@@ -571,6 +582,8 @@
 			sb.add('fp', userFingerprint);
 			sb.add('uid', businessUserId);
 
+			refreshUrl();
+
 			// Adds with custom conditions
 			if (configReferrerUrl.length) {
 				sb.add('refr', purify(configReferrerUrl));
@@ -714,6 +727,8 @@
 			// Fixup page title. We'll pass this to logPagePing too.
 			var pageTitle = helpers.fixupTitle(customTitle || configTitle);
 
+			refreshUrl();
+
 			// Log page view
 			core.trackPageView(purify(configCustomUrl || locationHrefAlias), pageTitle, purify(configReferrerUrl), addCommonContexts(context));
 
@@ -768,6 +783,7 @@
 		 * @param object context Custom context relating to the event
 		 */
 		function logPagePing(pageTitle, context) {
+			refreshUrl();
 			core.trackPagePing(
 				purify(configCustomUrl || locationHrefAlias),
 				pageTitle,
@@ -949,6 +965,7 @@
 			 * @param string url
 			 */
 			setCustomUrl: function (url) {
+				refreshUrl();
 				configCustomUrl = resolveRelativeReference(locationHrefAlias, url);
 			},
 
@@ -1198,6 +1215,7 @@
 			 * @param string queryName Name of a querystring name-value pair
 			 */
 			setUserIdFromLocation: function(querystringField) {
+				refreshUrl();
 				businessUserId = helpers.fromQuerystring(querystringField, locationHrefAlias);
 			},
 
@@ -1207,6 +1225,7 @@
 			 * @param string queryName Name of a querystring name-value pair
 			 */
 			setUserIdFromReferrer: function(querystringField) {
+				refreshUrl();
 				businessUserId = helpers.fromQuerystring(querystringField, configReferrerUrl);
 			},
 
