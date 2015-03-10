@@ -102,6 +102,8 @@
 			locationHrefAlias = locationArray[1],
 			configReferrerUrl = locationArray[2],
 
+			customReferrer,
+
 			argmap = argmap || {},
 
 			// Request method is always GET for Snowplow
@@ -591,10 +593,7 @@
 
 			refreshUrl();
 
-			// Adds with custom conditions
-			if (configReferrerUrl.length) {
-				sb.add('refr', purify(configReferrerUrl));
-			}
+			sb.add('refr', purify(customReferrer || configReferrerUrl));
 
 			// Add the page URL last as it may take us over the IE limit (and we don't always need it)
 			sb.add('url', purify(configCustomUrl || locationHrefAlias));
@@ -737,7 +736,7 @@
 			refreshUrl();
 
 			// Log page view
-			core.trackPageView(purify(configCustomUrl || locationHrefAlias), pageTitle, purify(configReferrerUrl), addCommonContexts(context));
+			core.trackPageView(purify(configCustomUrl || locationHrefAlias), pageTitle, purify(customReferrer || configReferrerUrl), addCommonContexts(context));
 
 			// Send ping (to log that user has stayed on page)
 			var now = new Date();
@@ -794,7 +793,7 @@
 			core.trackPagePing(
 				purify(configCustomUrl || locationHrefAlias),
 				pageTitle,
-				purify(configReferrerUrl),
+				purify(customReferrer || configReferrerUrl),
 				cleanOffset(minXOffset),
 				cleanOffset(maxXOffset),
 				cleanOffset(minYOffset),
@@ -963,7 +962,7 @@
 			 * @param string url
 			 */
 			setReferrerUrl: function (url) {
-				configReferrerUrl = url;
+				customReferrer = url;
 			},
 
 			/**
