@@ -275,9 +275,16 @@
 		 */
 		function refreshUrl() {
 			locationArray = proxies.fixupUrl(documentAlias.domain, windowAlias.location.href, helpers.getReferrer());
+
+			// If this is a single-page app and the page URL has changed, then:
+			//   - if the new URL's querystring contains a "refer(r)er" parameter, use it as the referrer
+			//   - otherwise use the old URL as the referer
+			if (locationArray[1] !== locationHrefAlias) {
+				configReferrerUrl = helpers.getReferrer(locationHrefAlias);
+			}
+
 			domainAlias = helpers.fixupDomain(locationArray[0]);
 			locationHrefAlias = locationArray[1];
-			configReferrerUrl = locationArray[2];
 		}
 
 		/**
